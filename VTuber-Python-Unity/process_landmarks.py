@@ -101,13 +101,13 @@ def process_face(img_facemesh, faces, pose_estimator_):
     #     % (steady_pose_eye[0], steady_pose_eye[1], steady_pose_eye[2], steady_pose_eye[3]))
     # print("EAR_LEFT: %.2f; EAR_RIGHT: %.2f" % (ear_left, ear_right))
     # print("MAR: %.2f; Mouth Distance: %.2f" % (mar, steady_mouth_dist))
-    lol = pose_estimator_.draw_axes(img_facemesh, steady_pose[0], steady_pose[1])
+    pose_estimator_.draw_axes(img_facemesh, steady_pose[0], steady_pose[1])
 
     face_info = (roll, pitch, yaw,
             ear_left, ear_right, x_ratio_left, y_ratio_left, x_ratio_right, y_ratio_right,
             mar, mouth_distance)
     
-    return face_info, lol
+    return face_info
 
 def process_hands(img_hands, hands, handed_ness, worldlist_hands, pose_estimator):
     image_points = np.zeros((21, 2))
@@ -123,6 +123,8 @@ def process_hands(img_hands, hands, handed_ness, worldlist_hands, pose_estimator
         
         interesting_points = np.array([image_points[i] for i in [0, 1, 5, 9, 13, 17]])
         world_coordinates = np.array([worldlist_hands[i][j] for j in [0, 1, 5, 9, 13, 17]])
+
+        fingertip_points = np.array([image_points[i] for i in [4, 8, 12, 16, 20]])
         # The third step: pose estimation
         # pose: [[rvec], [tvec]]
         pose = pose_estimator.solve_pose_by_all_points(interesting_points, world_coordinates)
@@ -142,11 +144,11 @@ def process_hands(img_hands, hands, handed_ness, worldlist_hands, pose_estimator
         pitch = np.clip(-(180 + np.degrees(steady_pose[0][0])), -90, 90)
         yaw =  np.clip(np.degrees(steady_pose[0][2]), -90, 90)
 
-        hands_info.append(([roll, pitch, yaw], handed_ness[i]))
-        lol = pose_estimator.draw_axes(img_hands, steady_pose[0], steady_pose[1])
+        hands_info.append(([roll, pitch, yaw], handed_ness[i], fingertip_points))
+        pose_estimator.draw_axes(img_hands, steady_pose[0], steady_pose[1])
     
 
-    return hands_info, lol
+    return hands_info
 
 
 def process_body(img_body, landmarks_body, worldlist_body, pose_estimator):
@@ -179,6 +181,6 @@ def process_body(img_body, landmarks_body, worldlist_body, pose_estimator):
     yaw =  np.clip(np.degrees(steady_pose[0][2]), -90, 90)
 
     body_info.append(([roll, pitch, yaw]))
-    lol = pose_estimator.draw_axes(img_body, steady_pose[0], steady_pose[1])
+    pose_estimator.draw_axes(img_body, steady_pose[0], steady_pose[1])
 
-    return body_info, lol
+    return body_info

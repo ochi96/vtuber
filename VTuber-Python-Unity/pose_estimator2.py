@@ -28,19 +28,7 @@ class PoseEstimator:
         # Rotation vector and translation vector
         self.r_vec = None
         self.t_vec = None
-
-    # def get_full_model_points(self, filename='model.txt'):
-    #     """Get all 468 3D model points from file"""
-    #     raw_value = []
-
-    #     with open(filename) as file:
-    #         for line in file:
-    #             raw_value.append(line)
-
-    #     model_points = np.array(raw_value, dtype=np.float32)
-    #     model_points = np.reshape(model_points, (-1, 3))
-
-    #     return model_points
+    
 
     def solve_pose_by_all_points(self, image_points, world_list):
         """

@@ -97,23 +97,26 @@ def main():
 
         # if there is any face detected
         if faces:
-            face_info, img4 = process_face(img_facemesh,  faces, pose_estimator_)
+            face_info = process_face(img_facemesh,  faces, pose_estimator_)
             if args.connect:
                 send_info_to_unity(socket,face_info)
             if args.debug:
                 print('face_info',face_info)
                 pass
+            pose_estimator_ = PoseEstimator_((img.shape[0], img.shape[1]))
+
 
         if hands:
-            hands_info, img6 = process_hands(img_hands, hands, handed_ness, worldlist_hands, pose_estimator)
+            hands_info = process_hands(img_hands, hands, handed_ness, worldlist_hands, pose_estimator)
             if args.connect:
                 send_info_to_unity(socket, hands_info)
             if args.debug:
-                print('hands_info', hands_info)
+                print('hands_info:', hands_info)
                 pass
+            pose_estimator = PoseEstimator((img.shape[0], img.shape[1]))
         
         if landmarks_body.any():
-            body_info, img5 = process_body(img_body, landmarks_body, wordlist_body, pose_estimator)
+            body_info = process_body(img_body, landmarks_body, wordlist_body, pose_estimator)
             # cv2.imshow('body',img_body)
             if args.connect:
                 send_info_to_unity(socket,body_info)
@@ -121,6 +124,7 @@ def main():
                 print('body_info', body_info)
                 # cv2.imshow('body', img_body)
                 pass
+            pose_estimator = PoseEstimator((img.shape[0], img.shape[1]))
         
         else:
 

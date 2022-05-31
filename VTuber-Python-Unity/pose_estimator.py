@@ -120,11 +120,6 @@ class PoseEstimator_:
     def draw_axes(self, img, R, t):
         img	= cv2.drawFrameAxes(img, self.camera_matrix, self.dist_coeefs, R, t, 20)
         return img
-        # cv2.imwrite('lol.png', img)
-        # cv2.imshow('lol', img)
-        # cv2.waitKey()
-        # cv2.destroyAllWindows()
-
 
     def reset_r_vec_t_vec(self):
         self.r_vec = None
