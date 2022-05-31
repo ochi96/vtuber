@@ -25,7 +25,6 @@ from stabilizer import Stabilizer
 from facial_features import FacialFeatures, Eyes
 
 from process_landmarks import process_body, process_face, process_hands
-from display_hands import lol
 # global variable
 port = 5066         # have to be same as unity
 
